@@ -60,6 +60,7 @@ class NetworkAnalyzer {
 
     final out = StreamController<NetworkAddress>();
     final futures = <Future<Socket>>[];
+
     for (int i = 1; i < 256; ++i) {
       final host = '$subnet.$i';
       final Future<Socket> f = _ping(host, port, timeout);

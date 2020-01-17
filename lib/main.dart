@@ -1,6 +1,9 @@
+import 'package:analytics_test/NetworkAnalyzer.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -31,6 +34,23 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
+
+    const port = 9001;
+
+    final stream = NetworkAnalyzer.discover2(
+      '192.168.137', port,
+      timeout: Duration(milliseconds: 5000),
+    );
+
+    int found = 0;
+
+    stream.listen((NetworkAddress addr) {
+      if (addr.exists) {
+        found++;
+
+        print('Found device: ${addr.ip}:$port');
+      }
+    }).onDone(() => print('Finish. Found $found device(s)'));
   }
 
   @override
